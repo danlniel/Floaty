@@ -87,6 +87,8 @@ open class FloatyItem: UIView {
         get {
             if _titleLabel == nil {
                 _titleLabel = UILabel()
+                _titleLabel?.backgroundColor = UIColor.black.withAlphaComponent(0.85)
+                _titleLabel?.font = UIFont (name: "Rubik-Regular", size: 15)
                 _titleLabel?.textColor = titleColor
                 addSubview(_titleLabel!)
             }
