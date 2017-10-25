@@ -18,6 +18,8 @@ open class FloatyItem: UIView {
     /**
      This object's button size.
      */
+  
+    open var padding: CGFloat = 10
     open var size: CGFloat = 42 {
         didSet {
             self.frame = CGRect(x: 0, y: 0, width: size, height: size)
@@ -40,6 +42,19 @@ open class FloatyItem: UIView {
         didSet {
             titleLabel.textColor = titleColor
         }
+    }
+  
+    open var titleFont: UIFont? = UIFont.systemFont(ofSize: 10) {
+      didSet {
+        titleLabel.font = titleFont
+        titleLabel.sizeToFit()
+      }
+    }
+  
+    open var titleBackgroundColor: UIColor = UIColor.white {
+      didSet {
+        titleLabel.backgroundColor = titleBackgroundColor
+      }
     }
 
     /**
@@ -87,8 +102,9 @@ open class FloatyItem: UIView {
         get {
             if _titleLabel == nil {
                 _titleLabel = UILabel()
-                _titleLabel?.backgroundColor = UIColor.black.withAlphaComponent(0.85)
-                _titleLabel?.font = UIFont (name: "Rubik-Regular", size: 15)
+                _titleLabel?.textAlignment = .center
+                _titleLabel?.backgroundColor = titleBackgroundColor
+                _titleLabel?.font = titleFont
                 _titleLabel?.textColor = titleColor
                 addSubview(_titleLabel!)
             }
@@ -103,6 +119,7 @@ open class FloatyItem: UIView {
         didSet {
             titleLabel.text = title
             titleLabel.sizeToFit()
+            titleLabel.frame.size.width += padding
             titleLabel.frame.origin.x = -titleLabel.frame.size.width - 10
             titleLabel.frame.origin.y = self.size/2-titleLabel.frame.size.height/2
         }
@@ -163,6 +180,7 @@ open class FloatyItem: UIView {
         self.layer.shouldRasterize = true
         self.layer.rasterizationScale = UIScreen.main.scale
         createCircleLayer()
+        createTitleCircle()
         setShadow()
 
         if _titleLabel != nil {
@@ -173,6 +191,11 @@ open class FloatyItem: UIView {
         }
     }
 
+    fileprivate func createTitleCircle() {
+      titleLabel.layer.cornerRadius = titleLabel.frame.size.height / 2
+      titleLabel.layer.masksToBounds = true
+    }
+  
     fileprivate func createCircleLayer() {
         //        circleLayer.frame = CGRectMake(frame.size.width - size, 0, size, size)
         let castParent : Floaty = superview as! Floaty
